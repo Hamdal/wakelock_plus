@@ -10,17 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class FLTToggleMessage;
-@class FLTIsEnabledMessage;
+@class FLTPToggleMessage;
+@class FLTPIsEnabledMessage;
 
 /// Message for toggling the wakelock on the platform side.
-@interface FLTToggleMessage : NSObject
+@interface FLTPToggleMessage : NSObject
 + (instancetype)makeWithEnable:(nullable NSNumber *)enable;
 @property(nonatomic, strong, nullable) NSNumber * enable;
 @end
 
 /// Message for reporting the wakelock state from the platform side.
-@interface FLTIsEnabledMessage : NSObject
+@interface FLTPIsEnabledMessage : NSObject
 + (instancetype)makeWithEnabled:(nullable NSNumber *)enabled;
 @property(nonatomic, strong, nullable) NSNumber * enabled;
 @end
@@ -29,9 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 NSObject<FlutterMessageCodec> *FLTWakelockPlusApiGetCodec(void);
 
 @protocol FLTWakelockPlusApi
-- (void)toggleMsg:(FLTToggleMessage *)msg error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)toggleMsg:(FLTPToggleMessage *)msg error:(FlutterError *_Nullable *_Nonnull)error;
 /// @return `nil` only when `error != nil`.
-- (nullable FLTIsEnabledMessage *)isEnabledWithError:(FlutterError *_Nullable *_Nonnull)error;
+- (nullable FLTPIsEnabledMessage *)isEnabledWithError:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void SetUpFLTWakelockPlusApi(id<FlutterBinaryMessenger> binaryMessenger, NSObject<FLTWakelockPlusApi> *_Nullable api);

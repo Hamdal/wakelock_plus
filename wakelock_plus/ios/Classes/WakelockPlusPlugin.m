@@ -14,7 +14,7 @@
   SetUpFLTWakelockPlusApi(registrar.messenger, instance);
 }
 
-- (void)toggleMsg:(FLTToggleMessage*)input error:(FlutterError**)error {
+- (void)toggleMsg:(FLTPToggleMessage*)input error:(FlutterError**)error {
   BOOL enable = [input.enable boolValue];
   if (!enable) {
     [[UIApplication sharedApplication] lock_idleTimerlockEnable:enable];//should disable first
@@ -34,9 +34,9 @@
 }
 
 
-- (FLTIsEnabledMessage*)isEnabledWithError:(FlutterError* __autoreleasing *)error {
+- (FLTPIsEnabledMessage*)isEnabledWithError:(FlutterError* __autoreleasing *)error {
   NSNumber *enabled = [NSNumber numberWithBool:[[UIApplication sharedApplication] isIdleTimerDisabled]];
-  FLTIsEnabledMessage* result = [[FLTIsEnabledMessage alloc] init];
+  FLTPIsEnabledMessage* result = [[FLTPIsEnabledMessage alloc] init];
   result.enabled = enabled;
   return result;
 }

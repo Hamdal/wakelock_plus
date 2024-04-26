@@ -27,31 +27,31 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
   return (result == [NSNull null]) ? nil : result;
 }
 
-@interface FLTToggleMessage ()
-+ (FLTToggleMessage *)fromList:(NSArray *)list;
-+ (nullable FLTToggleMessage *)nullableFromList:(NSArray *)list;
+@interface FLTPToggleMessage ()
++ (FLTPToggleMessage *)fromList:(NSArray *)list;
++ (nullable FLTPToggleMessage *)nullableFromList:(NSArray *)list;
 - (NSArray *)toList;
 @end
 
-@interface FLTIsEnabledMessage ()
-+ (FLTIsEnabledMessage *)fromList:(NSArray *)list;
-+ (nullable FLTIsEnabledMessage *)nullableFromList:(NSArray *)list;
+@interface FLTPIsEnabledMessage ()
++ (FLTPIsEnabledMessage *)fromList:(NSArray *)list;
++ (nullable FLTPIsEnabledMessage *)nullableFromList:(NSArray *)list;
 - (NSArray *)toList;
 @end
 
-@implementation FLTToggleMessage
+@implementation FLTPToggleMessage
 + (instancetype)makeWithEnable:(nullable NSNumber *)enable {
-  FLTToggleMessage* pigeonResult = [[FLTToggleMessage alloc] init];
+  FLTPToggleMessage* pigeonResult = [[FLTPToggleMessage alloc] init];
   pigeonResult.enable = enable;
   return pigeonResult;
 }
-+ (FLTToggleMessage *)fromList:(NSArray *)list {
-  FLTToggleMessage *pigeonResult = [[FLTToggleMessage alloc] init];
++ (FLTPToggleMessage *)fromList:(NSArray *)list {
+  FLTPToggleMessage *pigeonResult = [[FLTPToggleMessage alloc] init];
   pigeonResult.enable = GetNullableObjectAtIndex(list, 0);
   return pigeonResult;
 }
-+ (nullable FLTToggleMessage *)nullableFromList:(NSArray *)list {
-  return (list) ? [FLTToggleMessage fromList:list] : nil;
++ (nullable FLTPToggleMessage *)nullableFromList:(NSArray *)list {
+  return (list) ? [FLTPToggleMessage fromList:list] : nil;
 }
 - (NSArray *)toList {
   return @[
@@ -60,19 +60,19 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 }
 @end
 
-@implementation FLTIsEnabledMessage
+@implementation FLTPIsEnabledMessage
 + (instancetype)makeWithEnabled:(nullable NSNumber *)enabled {
-  FLTIsEnabledMessage* pigeonResult = [[FLTIsEnabledMessage alloc] init];
+  FLTPIsEnabledMessage* pigeonResult = [[FLTPIsEnabledMessage alloc] init];
   pigeonResult.enabled = enabled;
   return pigeonResult;
 }
-+ (FLTIsEnabledMessage *)fromList:(NSArray *)list {
-  FLTIsEnabledMessage *pigeonResult = [[FLTIsEnabledMessage alloc] init];
++ (FLTPIsEnabledMessage *)fromList:(NSArray *)list {
+  FLTPIsEnabledMessage *pigeonResult = [[FLTPIsEnabledMessage alloc] init];
   pigeonResult.enabled = GetNullableObjectAtIndex(list, 0);
   return pigeonResult;
 }
-+ (nullable FLTIsEnabledMessage *)nullableFromList:(NSArray *)list {
-  return (list) ? [FLTIsEnabledMessage fromList:list] : nil;
++ (nullable FLTPIsEnabledMessage *)nullableFromList:(NSArray *)list {
+  return (list) ? [FLTPIsEnabledMessage fromList:list] : nil;
 }
 - (NSArray *)toList {
   return @[
@@ -87,9 +87,9 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 - (nullable id)readValueOfType:(UInt8)type {
   switch (type) {
     case 128: 
-      return [FLTIsEnabledMessage fromList:[self readValue]];
+      return [FLTPIsEnabledMessage fromList:[self readValue]];
     case 129: 
-      return [FLTToggleMessage fromList:[self readValue]];
+      return [FLTPToggleMessage fromList:[self readValue]];
     default:
       return [super readValueOfType:type];
   }
@@ -100,10 +100,10 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 @end
 @implementation FLTWakelockPlusApiCodecWriter
 - (void)writeValue:(id)value {
-  if ([value isKindOfClass:[FLTIsEnabledMessage class]]) {
+  if ([value isKindOfClass:[FLTPIsEnabledMessage class]]) {
     [self writeByte:128];
     [self writeValue:[value toList]];
-  } else if ([value isKindOfClass:[FLTToggleMessage class]]) {
+  } else if ([value isKindOfClass:[FLTPToggleMessage class]]) {
     [self writeByte:129];
     [self writeValue:[value toList]];
   } else {
@@ -144,7 +144,7 @@ void SetUpFLTWakelockPlusApi(id<FlutterBinaryMessenger> binaryMessenger, NSObjec
       NSCAssert([api respondsToSelector:@selector(toggleMsg:error:)], @"FLTWakelockPlusApi api (%@) doesn't respond to @selector(toggleMsg:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
-        FLTToggleMessage *arg_msg = GetNullableObjectAtIndex(args, 0);
+        FLTPToggleMessage *arg_msg = GetNullableObjectAtIndex(args, 0);
         FlutterError *error;
         [api toggleMsg:arg_msg error:&error];
         callback(wrapResult(nil, error));
@@ -163,7 +163,7 @@ void SetUpFLTWakelockPlusApi(id<FlutterBinaryMessenger> binaryMessenger, NSObjec
       NSCAssert([api respondsToSelector:@selector(isEnabledWithError:)], @"FLTWakelockPlusApi api (%@) doesn't respond to @selector(isEnabledWithError:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         FlutterError *error;
-        FLTIsEnabledMessage *output = [api isEnabledWithError:&error];
+        FLTPIsEnabledMessage *output = [api isEnabledWithError:&error];
         callback(wrapResult(output, error));
       }];
     } else {
